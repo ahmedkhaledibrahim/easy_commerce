@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "807114905035",
+    "project_id": "easy-commerce-450f1",
+    "storage_bucket": "easy-commerce-450f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807114905035:android:389338caa60d7580d5124e",
+        "android_client_info": {
+          "package_name": "com.example.easy_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807114905035-log7r03cgdma82bnl49r8skt4fmhhigi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKc1dzlYQvI3o5LK-HJ2cUfzn9Uw-VSsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807114905035-log7r03cgdma82bnl49r8skt4fmhhigi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
