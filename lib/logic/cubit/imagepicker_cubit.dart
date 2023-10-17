@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:easy_commerce/data/repositories/images_repo.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 part 'imagepicker_state.dart';

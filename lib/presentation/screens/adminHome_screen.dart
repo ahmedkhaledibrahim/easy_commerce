@@ -1,9 +1,10 @@
+import 'package:easy_commerce/logic/bloc/wears/wears_bloc.dart';
 import 'package:easy_commerce/presentation/widgets/customAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/bloc/auth/auth_bloc.dart';
-import '../../logic/bloc/products/product_bloc.dart';
+
 
 class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({super.key});
@@ -23,7 +24,7 @@ class AdminHomeScreen extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/authentication');
                 },
                 child: Text(
-                    "${BlocProvider.of<AuthBloc>(context).state} + ${BlocProvider.of<ProductBloc>(context).state}"),
+                    "${BlocProvider.of<AuthBloc>(context).state} + ${BlocProvider.of<WearsBloc>(context).state}"),
               );
             }),
             GridView(

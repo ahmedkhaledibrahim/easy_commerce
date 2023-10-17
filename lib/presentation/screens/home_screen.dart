@@ -1,11 +1,6 @@
-import 'dart:async';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_commerce/data/models/product.dart';
-import 'package:easy_commerce/data/repositories/products_repo.dart';
 import 'package:easy_commerce/logic/bloc/auth/auth_bloc.dart';
-import 'package:easy_commerce/logic/bloc/products/product_bloc.dart';
-import 'package:flutter/foundation.dart';
+import 'package:easy_commerce/logic/bloc/wears/wears_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     // TODO: implement initState
-    BlocProvider.of<ProductBloc>(context).add(RetrieveProductsEvent());
+    BlocProvider.of<WearsBloc>(context).add(RetrieveWearsEvent());
 
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -36,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      BlocProvider.of<ProductBloc>(context).add(RetrieveProductsEvent());
+      BlocProvider.of<WearsBloc>(context).add(RetrieveWearsEvent());
     }
   }
 
@@ -124,35 +119,40 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
             ),
             Container(
-
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.sizeOf(context).width,
-
               ),
-              child: BlocBuilder<ProductBloc, ProductState>(
-                    builder: (context, state) => GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: (MediaQuery.sizeOf(context).width /2) / (MediaQuery.sizeOf(context).height /3)
-                      ),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: state.listOfProducts.length,
-                          itemBuilder: (context, index) {
-                            if (state is ProductLoaded &&
-                                state.listOfProducts.isNotEmpty) {
-                              return CustomProductCard(
-                                  product: state.listOfProducts[index]);
-                            } else if (state is ProductLoaded &&
-                                state.listOfProducts.isEmpty) {
-                              return const Text("No Products");
-                            } else if (state is ProductLoading) {
-                              return const CircularProgressIndicator();
-                            } else if (state is ProductFailed) {
-                              return const Text("No Products");
-                            }
-                          },
+              child: BlocBuilder<WearsBloc, WearsState>(
+                builder: (context, state) => GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: (MediaQuery.sizeOf(context).width / 2) /
+                          (MediaQuery.sizeOf(context).height / 3)),
+                  scrollDirection: Axis.vertical,
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.listOfWears.length,
+                  itemBuilder: (context, index) {
+                    if (state is WearsLoaded &&
+                        state.listOfWears.isNotEmpty) {
+                      return ClipRect(
+                        child: Hero(
+                          tag: "${state.listOfWears[index].id}",
+                          child: CustomProductCard(
+                              product: state.listOfWears[index]),
                         ),
+                      );
+                    } else if (state is WearsLoaded &&
+                        state.listOfWears.isEmpty) {
+                      return const Text("No Products");
+                    } else if (state is WearsLoading) {
+                      return const CircularProgressIndicator();
+                    } else if (state is WearsFailed) {
+                      return const Text("No Products");
+                    }
+                    return null;
+                  },
+                ),
               ),
             ),
             BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   Navigator.pushReplacementNamed(context, '/authentication');
                 },
                 child: Text(
-                    "${BlocProvider.of<AuthBloc>(context).state} + ${BlocProvider.of<ProductBloc>(context).state}"),
+                    "${BlocProvider.of<AuthBloc>(context).state} + ${BlocProvider.of<WearsBloc>(context).state}"),
               );
             }),
           ],

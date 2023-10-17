@@ -4,6 +4,7 @@ import 'package:easy_commerce/presentation/screens/authentication_screen.dart';
 import 'package:easy_commerce/presentation/screens/cart_screen.dart';
 import 'package:easy_commerce/presentation/screens/home_screen.dart';
 import 'package:easy_commerce/presentation/screens/initialScreen.dart';
+
 import 'package:easy_commerce/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:easy_commerce/logic/bloc/auth/auth_bloc.dart';
-import 'package:easy_commerce/logic/bloc/products/product_bloc.dart';
+
 import 'package:easy_commerce/presentation/screens/authentication_screen.dart';
 import 'package:easy_commerce/presentation/screens/home_screen.dart';
 import 'package:easy_commerce/presentation/widgets/customAppBar.dart';
@@ -33,12 +33,32 @@ class _InitialScreenState extends State<InitialScreen> {
       listener: (context, state) async {
         Future.delayed(Duration(seconds: 2)).then((value) => {
               if (BlocProvider.of<AuthBloc>(context).state is AuthUserSuccess)
-                {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),))}
-              else if(BlocProvider.of<AuthBloc>(context).state is AuthAdminSuccess){
-                {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomeScreen(),))}
-              }
+                {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ))
+                }
+              else if (BlocProvider.of<AuthBloc>(context).state
+                  is AuthAdminSuccess)
+                {
+                  {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdminHomeScreen(),
+                        ))
+                  }
+                }
               else
-                {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthenticationScreen(),))}
+                {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AuthenticationScreen(),
+                      ))
+                }
             });
       },
       child: Scaffold(

@@ -1,4 +1,3 @@
-import 'package:easy_commerce/data/models/user.dart';
 import 'package:easy_commerce/logic/bloc/auth/auth_bloc.dart';
 import 'package:easy_commerce/presentation/widgets/alertDialogWidget.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       _isLoginForm = !_isLoginForm;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +90,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     // TODO: implement listener}
                     if (state is AuthUserSuccess) {
                       Navigator.of(context).pushReplacementNamed('/home');
-                    }
-                    else if(state is AuthAdminSuccess){
+                    } else if (state is AuthAdminSuccess) {
                       Navigator.of(context).pushReplacementNamed('/adminhome');
-                    }
-                    else if (state is AuthFailure) {
+                    } else if (state is AuthFailure) {
                       alertDialogWidget(
                           title: 'Authentication Problem',
                           content: state.errorMessage,
@@ -110,21 +105,20 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     color: Colors.black,
                     textColor: Colors.white,
                     onPressed: () {
-                      if(_formKey.currentState!.validate()){
+                      if (_formKey.currentState!.validate()) {
                         Customer customer = Customer(
                           name: _nameController.text,
                           password: _passwordController.text,
                           email: _emailController.text,
                         );
-                        if (!_isLoginForm ) {
-
+                        if (!_isLoginForm) {
                           BlocProvider.of<AuthBloc>(context)
                               .add(SignUpEvent(customer: customer));
                         } else if (_isLoginForm) {
-                          BlocProvider.of<AuthBloc>(context).add(LoginEvent(user: customer));
+                          BlocProvider.of<AuthBloc>(context)
+                              .add(LoginEvent(user: customer));
                         }
                       }
-
                     },
                   ),
                 ),

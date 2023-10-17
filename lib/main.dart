@@ -8,8 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
 
-import 'data/models/user.dart';
-import 'logic/bloc/products/product_bloc.dart';
+import 'logic/bloc/wears/wears_bloc.dart';
 import 'logic/cubit/imagepicker_cubit.dart';
 
 void main() async {
@@ -38,10 +37,10 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AuthBloc(),
         ),
         BlocProvider(
-          create: (context) => ProductBloc(),
+          create: (context) => WearsBloc(),
         ),
         BlocProvider(
-          create: (context) =>ImagepickerCubit(),
+          create: (context) => ImagepickerCubit(),
         ),
       ],
       child: MaterialApp(

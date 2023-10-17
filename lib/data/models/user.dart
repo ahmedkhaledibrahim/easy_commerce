@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_commerce/data/repositories/authentication_repo.dart';
+
 
 class UserModel {
   final String name;
@@ -18,9 +18,9 @@ class UserModel {
 
   toJson() {
     return {
-      'name': this.name,
-      'email': this.email,
-      'role': this.role,
+      'name': name,
+      'email': email,
+      'role': role,
     };
   }
 

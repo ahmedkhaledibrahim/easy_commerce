@@ -1,14 +1,11 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:easy_commerce/data/local/userServices.dart';
-import 'package:easy_commerce/data/models/admin.dart';
+
 import 'package:easy_commerce/data/models/customer.dart';
 
-import 'package:easy_commerce/data/repositories/authentication_repo.dart';
-import 'package:easy_commerce/data/repositories/users_repo.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
+
 
 import '../../../data/models/user.dart';
 

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_commerce/data/local/userServices.dart';
 import 'package:easy_commerce/data/models/user.dart';
 import 'package:easy_commerce/data/repositories/users_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 import '../models/customer.dart';
 
@@ -30,7 +29,7 @@ class AuthenticationRepo {
         case 'weak-password':
           return 'The Password Is Too Weak';
         default:
-          return '${e.toString()}';
+          return e.toString();
       }
     }
     return "";

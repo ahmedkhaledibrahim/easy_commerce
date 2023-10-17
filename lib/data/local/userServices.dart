@@ -15,7 +15,7 @@ class UserServices {
 
   static Future<String> getAuthStatus() async {
     LazyBox authbox = await Hive.openLazyBox('loginStatus');
-    bool isopen = await authbox.isNotEmpty;
+    bool isopen =  authbox.isNotEmpty;
     if(isopen){
       bool auth = await authbox.get('loginStatus');
       if (auth) {
