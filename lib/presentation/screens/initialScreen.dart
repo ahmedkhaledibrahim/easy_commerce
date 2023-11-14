@@ -3,10 +3,8 @@ import 'package:easy_commerce/logic/bloc/auth/auth_bloc.dart';
 import 'package:easy_commerce/presentation/screens/authentication_screen.dart';
 import 'package:easy_commerce/presentation/screens/home_screen.dart';
 import 'package:easy_commerce/presentation/widgets/customAppBar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'adminHome_screen.dart';
 
 class InitialScreen extends StatefulWidget {
@@ -22,9 +20,7 @@ class _InitialScreenState extends State<InitialScreen> {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(CheckAuthStatus());
-    if (kDebugMode) {
-      print('initial');
-    }
+    // BlocProvider.of<WearsBloc>(context).add(RetrieveWearsEvent());
   }
 
   @override

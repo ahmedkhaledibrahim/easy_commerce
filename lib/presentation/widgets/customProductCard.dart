@@ -1,10 +1,9 @@
 import 'package:easy_commerce/presentation/screens/productDetails_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../../data/models/product.dart';
+import '../../data/models/wears.dart';
 
 class CustomProductCard extends StatelessWidget {
-  final Product product;
+  final Wears product;
 
   const CustomProductCard({super.key, required this.product});
 
@@ -13,7 +12,7 @@ class CustomProductCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (_, BoxConstraints constraints) {
         double height = constraints.maxHeight;
-        double width = constraints.maxWidth;
+        double width = MediaQuery.sizeOf(context).width*0.4;
         return GestureDetector(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
@@ -51,8 +50,8 @@ class CustomProductCard extends StatelessWidget {
                       Container(
                         constraints: BoxConstraints(
                             minHeight: height * 0.13,
-                            minWidth: width * 0.25,
-                            maxWidth: width * 0.5),
+                            minWidth: width * 0.5,
+                            ),
                         decoration: const BoxDecoration(
                             color: Color.fromRGBO(111, 113, 115, 0.7),
                             borderRadius: BorderRadius.only(

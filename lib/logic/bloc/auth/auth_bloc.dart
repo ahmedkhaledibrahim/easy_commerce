@@ -6,7 +6,6 @@ import 'package:easy_commerce/data/models/customer.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-
 import '../../../data/models/user.dart';
 
 part 'auth_event.dart';
@@ -14,67 +13,80 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthLoading()) {
-    on<AuthEvent>((event, emit) async {
-      // TODO: implement event handler
-      if (event is SignUpEvent) {
-        emit(AuthLoading());
-        try {
-          String message = await event.customer.signUp(event.customer.email,
-              event.customer.password, event.customer.name);
-          if (message.isEmpty) {
-            emit(AuthUserSuccess());
-            await UserServices.authenticationSuccess(event.customer);
-            //UsersRepository.addUser(event.user);
-          } else if (message.isNotEmpty) {
-            emit(AuthFailure(errorMessage: message));
-          }
-        } catch (e) {
-          emit(AuthFailure(errorMessage: e.toString()));
-          throw Exception(e);
-        }
-      } else if (event is LoginEvent) {
-        emit(AuthLoading());
-        try {
-          var returnedData =
-              await event.user.signIn(event.user.email, event.user.password);
-          if (returnedData is String) {
-            emit(AuthFailure(errorMessage: returnedData));
-          } else if (returnedData is UserModel) {
-            if (returnedData.role == 'admin') {
-              emit(AuthAdminSuccess());
-              await UserServices.authenticationSuccess(returnedData);
-            } else if (returnedData.role == 'customer') {
-              emit(AuthUserSuccess());
-              await UserServices.authenticationSuccess(returnedData);
-            }
-          }
-        } catch (e) {
-          emit(AuthFailure(errorMessage: e.toString()));
-          throw Exception(e);
-        }
-      } else if (event is LogoutEvent) {
-        emit(AuthLoading());
-        try {
-          await UserServices.logout();
-          emit(AuthLoggedout());
-        } catch (e) {
-          throw Exception(e);
-        }
-      } else if (event is CheckAuthStatus) {
-        try {
-          String status = await UserServices.getAuthStatus();
-          if (status == 'admin') {
-            emit(AuthAdminSuccess());
-          } else if (status == 'customer') {
-            emit(AuthUserSuccess());
-          } else {
-            emit(AuthLoggedout());
-          }
-        } catch (e) {
-          throw Exception(e);
+  final UserServices userServices;
+
+  AuthBloc(this.userServices) : super(AuthLoading()) {
+    on<SignUpEvent>(_handleSignupEvent);
+    on<LoginEvent>(_handleLoginEvent);
+    on<LogoutEvent>(_handleLogoutEvent);
+    on<CheckAuthStatus>(_handleCheckAuthStatusEvent);
+  }
+
+  Future<void> _handleSignupEvent(
+      SignUpEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      String message = await event.customer.signUp(
+          event.customer.email, event.customer.password, event.customer.name);
+      if (message.isEmpty) {
+        emit(AuthUserSuccess());
+        await userServices.authenticationSuccess(event.customer);
+      } else if (message.isNotEmpty) {
+        emit(AuthFailure(errorMessage: message));
+      }
+    } catch (e) {
+      emit(AuthFailure(errorMessage: e.toString()));
+      throw Exception(e);
+    }
+  }
+
+  Future<void> _handleLoginEvent(
+      LoginEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      var returnedData =
+          await event.user.signIn(event.user.email, event.user.password);
+      if (returnedData is String) {
+        emit(AuthFailure(errorMessage: returnedData));
+      } else if (returnedData is UserModel) {
+        if (returnedData.role == 'admin') {
+          emit(AuthAdminSuccess());
+          await userServices.authenticationSuccess(returnedData);
+        } else if (returnedData.role == 'customer') {
+          emit(AuthUserSuccess());
+          await userServices.authenticationSuccess(returnedData);
         }
       }
-    });
+    } catch (e) {
+      emit(AuthFailure(errorMessage: e.toString()));
+      throw Exception(e);
+    }
+  }
+
+  Future<void> _handleLogoutEvent(
+      LogoutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await userServices.logout();
+      emit(AuthLoggedout());
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> _handleCheckAuthStatusEvent(
+      CheckAuthStatus event, Emitter<AuthState> emit) async {
+    try {
+      String status = await userServices.getAuthStatus();
+      if (status == 'admin') {
+        emit(AuthAdminSuccess());
+      } else if (status == 'customer') {
+        emit(AuthUserSuccess());
+      } else {
+        emit(AuthLoggedout());
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

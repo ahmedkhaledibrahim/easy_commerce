@@ -1,6 +1,7 @@
 import 'package:easy_commerce/logic/bloc/auth/auth_bloc.dart';
 import 'package:easy_commerce/logic/bloc/wears/wears_bloc.dart';
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     // TODO: implement initState
     BlocProvider.of<WearsBloc>(context).add(RetrieveWearsEvent());
-
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
@@ -105,45 +105,49 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             InkWell(
               onTap: () {},
               child: const Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 8.0, top: 10.0),
+                  padding: EdgeInsets.only(left: 8.0, top: 10.0),
                   child: Text(
-                    "See All",
+                    "Male Clothes",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: Colors.black54),
+                        fontSize: 20,
+                        color: Colors.blueAccent),
                   ),
                 ),
               ),
             ),
             Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.sizeOf(context).width,
+                maxWidth: MediaQuery.sizeOf(context).width * 0.9,
               ),
+              height: MediaQuery.sizeOf(context).height * 0.3,
               child: BlocBuilder<WearsBloc, WearsState>(
-                builder: (context, state) => GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: (MediaQuery.sizeOf(context).width / 2) /
-                          (MediaQuery.sizeOf(context).height / 3)),
-                  scrollDirection: Axis.vertical,
+                builder: (context, state) => ListView.builder(
+                  scrollDirection: Axis.horizontal,
                   physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: state.listOfWears.length,
+                  itemCount: BlocProvider.of<WearsBloc>(context)
+                      .listOfMaleWears
+                      .length,
                   itemBuilder: (context, index) {
                     if (state is WearsLoaded &&
-                        state.listOfWears.isNotEmpty) {
+                        BlocProvider.of<WearsBloc>(context)
+                            .listOfMaleWears
+                            .isNotEmpty) {
                       return ClipRect(
                         child: Hero(
-                          tag: "${state.listOfWears[index].id}",
+                          tag:
+                          "${BlocProvider.of<WearsBloc>(context).listOfMaleWears[index].id}",
                           child: CustomProductCard(
-                              product: state.listOfWears[index]),
+                              product: BlocProvider.of<WearsBloc>(context)
+                                  .listOfMaleWears[index]),
                         ),
                       );
                     } else if (state is WearsLoaded &&
-                        state.listOfWears.isEmpty) {
+                        BlocProvider.of<WearsBloc>(context)
+                            .listOfMaleWears
+                            .isEmpty) {
                       return const Text("No Products");
                     } else if (state is WearsLoading) {
                       return const CircularProgressIndicator();
@@ -151,6 +155,63 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       return const Text("No Products");
                     }
                     return null;
+                  },
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {},
+              child: const Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 8.0, top: 10.0),
+                  child: Text(
+                    "Female Clothes",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                        color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.sizeOf(context).width * 0.9,
+              ),
+              height: MediaQuery.sizeOf(context).height * 0.3,
+              child: BlocBuilder<WearsBloc, WearsState>(
+                builder: (context, state) => ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: const ScrollPhysics(),
+                  itemCount: BlocProvider.of<WearsBloc>(context)
+                      .listOfFemaleWears
+                      .length,
+                  itemBuilder: (context, index) {
+                    if (state is WearsLoaded &&
+                        BlocProvider.of<WearsBloc>(context)
+                            .listOfFemaleWears
+                            .isNotEmpty) {
+                      return ClipRect(
+                        child: Hero(
+                          tag:
+                              "${BlocProvider.of<WearsBloc>(context).listOfFemaleWears[index].id}",
+                          child: CustomProductCard(
+                              product: BlocProvider.of<WearsBloc>(context)
+                                  .listOfFemaleWears[index]),
+                        ),
+                      );
+                    } else if (state is WearsLoaded &&
+                        BlocProvider.of<WearsBloc>(context)
+                            .listOfFemaleWears
+                            .isEmpty) {
+                      return const Text("No Products");
+                    } else if (state is WearsLoading) {
+                      return const CircularProgressIndicator();
+                    } else if (state is WearsFailed) {
+                      return const Text("No Products");
+                    }
+                    return const Text("No Products");
                   },
                 ),
               ),

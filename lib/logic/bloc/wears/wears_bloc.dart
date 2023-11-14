@@ -10,29 +10,38 @@ part 'wears_event.dart';
 part 'wears_state.dart';
 
 class WearsBloc extends Bloc<WearsEvent, WearsState> {
-  WearsBloc() : super(WearsLoading(listOfWears: [])) {
-    on<WearsEvent>((event, emit) async {
-      // TODO: implement event handler
-      if (event is RetrieveWearsEvent) {
-        try {
-          emit(WearsLoading(listOfWears: []));
-          final products = await WearsRepository.getProducts();
-          emit(WearsLoaded(listOfWears: products));
-        } catch (e) {
-          emit(WearsFailed(listOfWears: []));
-        }
-      }
-      if (event is AddWearEvent) {
-        try {
-          addProduct(event.wear);
-          emit(WearsLoading(listOfWears: []));
-          final products = await WearsRepository.getProducts();
-          emit(WearsLoaded(listOfWears: products));
-        } catch (e) {
-          rethrow;
-        }
-      }
-    });
+  final WearsRepository wearsRepository;
+  List<Wears> listOfMaleWears = [];
+  List<Wears> listOfFemaleWears = [];
+
+  WearsBloc(this.wearsRepository) : super(WearsLoading()) {
+    on<RetrieveWearsEvent>(_handleRetreiveWearsEvent);
+    on<AddWearEvent>(_handleAddWearEvent);
+  }
+
+  Future<void> _handleRetreiveWearsEvent(
+      RetrieveWearsEvent event, Emitter<WearsState> emit) async {
+    try {
+      listOfMaleWears = await wearsRepository.getMaleWears();
+      listOfFemaleWears = await wearsRepository.getFemaleWears();
+      emit(WearsLoaded());
+    } catch (e) {
+      emit(WearsFailed());
+    }
+  }
+
+  Future<void> _handleAddWearEvent(
+      AddWearEvent event, Emitter<WearsState> emit) async {
+
+
+    try {
+      addProduct(event.wear);
+
+      _handleRetreiveWearsEvent(RetrieveWearsEvent(), emit);
+    } catch (e) {
+      emit(WearsFailed());
+      rethrow;
+    }
   }
 
   Future<void> addProduct(Wears product) async {

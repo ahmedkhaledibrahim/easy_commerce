@@ -1,3 +1,5 @@
+import 'package:easy_commerce/data/local/userServices.dart';
+import 'package:easy_commerce/data/repositories/wears_repo.dart';
 import 'package:easy_commerce/logic/bloc/auth/auth_bloc.dart';
 import 'package:easy_commerce/presentation/routes.dart';
 import 'package:easy_commerce/presentation/theme.dart';
@@ -34,10 +36,10 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc(),
+          create: (context) => AuthBloc(UserServices()),
         ),
         BlocProvider(
-          create: (context) => WearsBloc(),
+          create: (context) => WearsBloc(WearsRepository()),
         ),
         BlocProvider(
           create: (context) => ImagepickerCubit(),

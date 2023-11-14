@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import '../models/user.dart';
 
 class UserServices {
-  static Future authenticationSuccess(UserModel user) async {
+   Future<void> authenticationSuccess(UserModel user) async {
     LazyBox authbox = await Hive.openLazyBox('loginStatus');
     LazyBox namebox = await Hive.openLazyBox('userName');
     LazyBox rolebox = await Hive.openLazyBox('userRole');
@@ -13,7 +13,7 @@ class UserServices {
     await rolebox.put('userRole', user.role);
   }
 
-  static Future<String> getAuthStatus() async {
+   Future<String> getAuthStatus() async {
     LazyBox authbox = await Hive.openLazyBox('loginStatus');
     bool isopen =  authbox.isNotEmpty;
     if(isopen){
@@ -38,7 +38,7 @@ class UserServices {
     return 'null';
   }
 
-  static Future logout() async {
+   Future<void> logout() async {
     LazyBox authbox = await Hive.openLazyBox('loginStatus');
     await authbox.put('loginStatus', false);
 
